@@ -3,8 +3,8 @@ import { Text, View } from 'react-native'
 
 export default function App() {
   return (
-    <View className="flex-1 justify-center items-center bg-zinc-900">
-      <Text className="font-bold text-2xl text-zinc-100">
+    <View className="flex-1 items-center justify-center bg-zinc-900">
+      <Text className="text-2xl font-bold text-zinc-100">
         PENIS PENIS PENIS
       </Text>
       <StatusBar style="light" />
