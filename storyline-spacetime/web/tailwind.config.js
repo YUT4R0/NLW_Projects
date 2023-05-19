@@ -12,6 +12,10 @@ module.exports = {
         alt: 'var(--font-baijamjuree)'
       },
 
+      fontSize: {
+        '5xl': '2.5rem'
+      },
+
       colors: {
         gray: {
           50: '#eaeaea',
@@ -49,6 +53,18 @@ module.exports = {
           800: '#027435',
           900: '#025929',
         },
+      },
+
+      blur: {
+        full: '194px'
+      }, 
+
+      backgroundImage: {
+        stripes: 'linear-gradient(to bottom, rgba(255,255,255, .1), rgba(255,255,255, .1) 12.5%, transparent 12.5%, transparent)'
+      },
+
+      backgroundSize: {
+        stripes: '100% 8px'
       }
     },
   }, 

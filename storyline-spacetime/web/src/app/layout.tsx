@@ -2,6 +2,11 @@ import { Bai_Jamjuree, Roboto_Flex } from 'next/font/google'
 import { ReactNode } from 'react'
 import './globals.css'
 
+export const metadata = {
+  title: 'Storyline',
+  description: 'This app is adaptable to web and mobile devices and it was build using React, Next.js, Tailwindcss and TypeScript',
+}
+
 const roboto = Roboto_Flex({
   subsets: ['latin'],
   variable: '--font-roboto'
@@ -12,11 +17,6 @@ const baijamjuree = Bai_Jamjuree({
   weight: '400',
   variable: '--font-baijamjuree'
 })
-
-export const metadata = {
-  title: 'Storyline',
-  description: 'This app is adaptable to web and mobile devices and it was build using React, Next.js, Tailwindcss and TypeScript',
-}
 
 export default function RootLayout({
   children,
