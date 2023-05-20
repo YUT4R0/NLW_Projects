@@ -9,13 +9,15 @@ export const metadata = {
 
 const roboto = Roboto_Flex({
   subsets: ['latin'],
-  variable: '--font-roboto'
+  variable: '--font-roboto',
+  preload: false,
 })
 
 const baijamjuree = Bai_Jamjuree({
   subsets: ['latin'],
   weight: '400',
-  variable: '--font-baijamjuree'
+  variable: '--font-baijamjuree',
+  preload: false,
 })
 
 export default function RootLayout({
