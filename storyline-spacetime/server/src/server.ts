@@ -1,4 +1,7 @@
 import fastify from 'fastify'
+
+import cors from '@fastify/cors'
+
 import { postsRoutes } from './routes/posts'
 
 const app = fastify()
@@ -9,3 +12,7 @@ app.listen({ port }).then(() => {
 })
 
 app.register(postsRoutes)
+
+app.register(cors, {
+  origin: true, // every fron-end url request has access
+})
