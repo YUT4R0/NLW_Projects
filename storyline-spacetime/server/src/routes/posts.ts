@@ -4,10 +4,19 @@ import { z } from 'zod'
 
 import prisma from '../lib/prisma'
 
-export async function postsRoutes(app: FastifyInstance) {
+export default async function postsRoutes(app: FastifyInstance) {
+  // will verify if all routes has access token before executing the app methods above
+  app.addHook('preHandler', async (req) => {
+    // this will let the app return only the posts from the registered user
+    await req.jwtVerify()
+  })
+
   // GET ALL POSTS
-  app.get('/posts', async () => {
+  app.get('/posts', async (req) => {
     const posts = await prisma.post.findMany({
+      where: {
+        userId: req.user.sub,
+      },
       orderBy: {
         createdAt: 'asc',
       },
@@ -17,13 +26,13 @@ export async function postsRoutes(app: FastifyInstance) {
       return {
         id: post.id,
         coverUrl: post.coverUrl,
-        excerpt: post.content.substring(0, 120).concat('...'),
+        excerpt: post.content.substring(0, 100).concat('...'),
       }
     })
   })
 
   // GET SPECIFIC POST BY ID
-  app.get('/posts/:id', async (req) => {
+  app.get('/posts/:id', async (req, reply) => {
     const paramsSchema = z.object({
       id: z.string().uuid(),
     })
@@ -36,6 +45,10 @@ export async function postsRoutes(app: FastifyInstance) {
         id,
       },
     })
+
+    if (!post.isPublic && post.userId !== req.user.sub) {
+      return reply.status(401).send()
+    }
 
     return post
   })
@@ -55,7 +68,7 @@ export async function postsRoutes(app: FastifyInstance) {
         content,
         coverUrl,
         isPublic,
-        userId: '3cbd9d77-5d94-43f9-b5b5-46c3910903f3',
+        userId: req.user.sub,
       },
     })
 
@@ -63,7 +76,7 @@ export async function postsRoutes(app: FastifyInstance) {
   })
 
   // PUT POST BY ID (UPDATE)
-  app.put('/posts/:id', async (req) => {
+  app.put('/posts/:id', async (req, reply) => {
     // params validation
     const paramsSchema = z.object({
       id: z.string().uuid(),
@@ -79,7 +92,17 @@ export async function postsRoutes(app: FastifyInstance) {
 
     const { content, coverUrl, isPublic } = bodySchema.parse(req.body)
 
-    const updatedPost = await prisma.post.update({
+    let post = await prisma.post.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    })
+
+    if (post.userId !== req.user.sub) {
+      return reply.status(401).send()
+    }
+
+    post = await prisma.post.update({
       where: {
         id,
       },
@@ -90,16 +113,26 @@ export async function postsRoutes(app: FastifyInstance) {
       },
     })
 
-    return updatedPost
+    return post
   })
 
   // DELETE POST BY ID
-  app.delete('/posts/:id', async (req) => {
+  app.delete('/posts/:id', async (req, reply) => {
     const paramsSchema = z.object({
       id: z.string().uuid(),
     })
 
     const { id } = paramsSchema.parse(req.params)
+
+    const post = await prisma.post.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    })
+
+    if (post.userId !== req.user.sub) {
+      return reply.status(401).send()
+    }
 
     await prisma.post.delete({
       where: {

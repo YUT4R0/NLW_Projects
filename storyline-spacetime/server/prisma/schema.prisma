@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id          String @id @default(uuid())
-  name        String
-  githubID    Int    @unique
-  githubLogin String
-  avatarURL   String
-  posts       Post[]
+  id        String @id @default(uuid())
+  githubId  Int    @unique
+  name      String
+  login     String
+  avatarURL String
+  posts     Post[]
 }
 
 model Post {
-  id        String   @id @default(uuid())
-  userId    String
+  id     String @id @default(uuid())
+  userId String
+
   coverUrl  String
   content   String
   createdAt DateTime @default(now())

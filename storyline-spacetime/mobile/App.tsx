@@ -1,18 +1,17 @@
 import { StatusBar } from 'expo-status-bar'
+import { styled } from 'nativewind'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 
-import blurBg from './src/assets/bg-blur.png'
-import StripesBG from './src/assets/bg-stripes.svg'
-import NlwLogo from './src/assets/body-nlw-logo.svg'
-
+import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
 import {
   Roboto_400Regular,
   Roboto_700Bold,
   useFonts,
 } from '@expo-google-fonts/roboto'
 
-import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
-import { styled } from 'nativewind'
+import blurBg from './src/assets/bg-blur.png'
+import StripesBG from './src/assets/bg-stripes.svg'
+import NlwLogo from './src/assets/body-nlw-logo.svg'
 
 const StyledStripes = styled(StripesBG)
 
