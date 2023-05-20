@@ -10,9 +10,14 @@ import postsRoutes from './routes/posts'
 const app = fastify()
 const port = 3333
 
-app.listen({ port }).then(() => {
-  console.log(`Server listening on port http://localhost:${port}`)
-})
+app
+  .listen({
+    port,
+    host: '0.0.0.0', // mobile host for web browsers
+  })
+  .then(() => {
+    console.log(`Server listening on port http://localhost:${port}`)
+  })
 
 // CORS settings: every fron-end url request has access
 app.register(cors, {
