@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import Link from 'next/link'
 import logo from "../assets/nlw-logo.svg"
 
 export default function Hero() {
@@ -12,9 +13,12 @@ export default function Hero() {
             <p className='text-lg leading-relaxed'>Collect memorable moments from your journey and share (if you like) with the world!</p>
           </div>
 
-          <a href="" className='uppercase inline-block rounded-full bg-green-500 px-5 py-3 text-black font-alt text-sm font-bold leading-none hover:bg-green-700 transition-colors'>
+          <Link
+            href="/posts/new"
+            className='uppercase inline-block rounded-full bg-green-500 px-5 py-3 text-black font-alt text-sm font-bold leading-none hover:bg-green-700 transition-colors'
+          >
             REGISTER MEMORIES
-          </a>
+          </Link>
         </div>        
     )
 }
