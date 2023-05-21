@@ -15,7 +15,7 @@ export default function NewPost(){
               className="flex items-center cursor-pointer gap-1.5 text-sm text-gray-200 hover:text-gray-100"
             >
               <Camera className="w-3.5 h-3.5"/>
-              Attach media
+              Attach media (max: 5MB)
             </label>
 
             <label
