@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} ${baijamjuree.variable} bg-gray-900 font-sans text-gray-100`}>
-        <main className="grid grid-cols-2 min-h-screen">
+        <main className="grid grid-cols-2 min-h-screen max-w-screen overflow-x-hidden">
           {/* Left side */}
           <div className="relative overflow-hidden flex flex-col items-start justify-between px-24 py-16 border-r-2 border-white/10 bg-[url(../assets/bg-stars.svg)] bg-cover">  
             <Background />
@@ -52,7 +52,7 @@ export default function RootLayout({
           </div>
 
           {/* Right side */}
-          <div className="flex flex-col p-16 bg-[url(../assets/bg-stars.svg)] bg-cover">
+          <div className="flex max-h-screen overflow-y-scroll flex-col bg-[url(../assets/bg-stars.svg)] bg-cover">
             {children}
           </div>
         </main>

@@ -26,7 +26,8 @@ export default async function postsRoutes(app: FastifyInstance) {
       return {
         id: post.id,
         coverUrl: post.coverUrl,
-        excerpt: post.content.substring(0, 100).concat('...'),
+        excerpt: post.content.substring(0, 200).concat('...'),
+        createdAt: post.createdAt,
       }
     })
   })

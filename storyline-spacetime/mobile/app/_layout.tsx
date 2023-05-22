@@ -8,9 +8,9 @@ import * as SecureStore from 'expo-secure-store'
 
 import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
 import {
-    Roboto_400Regular,
-    Roboto_700Bold,
-    useFonts,
+  Roboto_400Regular,
+  Roboto_700Bold,
+  useFonts,
 } from '@expo-google-fonts/roboto'
 
 import { StatusBar } from 'expo-status-bar'
@@ -56,11 +56,12 @@ export default function Layout() {
             contentStyle: {
               backgroundColor: 'transparent',
             },
+            animation: 'fade'
           }}
         >
           <Stack.Screen name="index" redirect={IsUserAuthenticated as boolean} />
-          <Stack.Screen name="new_post" />
           <Stack.Screen name="posts" />
+          <Stack.Screen name="new_post" />
         </Stack>
       </ImageBackground>
     </>
