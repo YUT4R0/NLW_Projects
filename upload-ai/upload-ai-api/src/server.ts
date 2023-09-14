@@ -1,10 +1,13 @@
 import { fastify } from 'fastify'
+import { createTranscriptionRoute } from './routes/createTranscriptionRoute'
+import { getAllPromptsRoute } from './routes/getAllPromptsRoute'
+import { uploadVideoRoute } from './routes/uploadVideoRoute.1'
 
 const app = fastify()
 
-app.get('/', () => {
-  return 'main path'
-})
+app.register(getAllPromptsRoute)
+app.register(uploadVideoRoute)
+app.register(createTranscriptionRoute)
 
 app
 .listen({ port: 3333 })
