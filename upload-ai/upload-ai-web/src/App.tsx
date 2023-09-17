@@ -1,4 +1,8 @@
-import { FileVideo, Github, Upload, Wand2 } from 'lucide-react'
+import { useCompletion } from 'ai/react'
+import { Github, Wand2 } from 'lucide-react'
+import { useState } from 'react'
+import PromptSelect from './components/PromptSelect'
+import VideoInputForm from './components/VideoInputForm'
 import { Button } from "./components/ui/button"
 import { Label } from './components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select'
@@ -7,6 +11,26 @@ import { Slider } from './components/ui/slider'
 import { Textarea } from './components/ui/textarea'
 
 function App() {
+  const [Temperature, setTemperature] = useState(0.5)
+  const [VideoId, setVideoId] = useState<string | null>(null)
+  const {
+    input,
+    setInput,
+    handleInputChange,
+    handleSubmit,
+    completion,
+    isLoading,
+  } = useCompletion({
+    api: 'http://localhost:3333/ai/complete',
+    body: {
+      VideoId,
+      Temperature,
+    },
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  
   return (
     <div className='min-h-screen flex flex-col'>
       <header className="px-6 py-3 flex items-center justify-between border-b">
@@ -24,8 +48,18 @@ function App() {
       <main className='flex-1 p-6 flex gap-6'>
         <div className="flex flex-col flex-1 gap-4">
           <div className="grid grid-rows-2 flex-1 gap-4">
-            <Textarea className='resize-none p-4 leading-relaxed' placeholder='Include the prompt for the AI...' />
-            <Textarea className='resize-none p-4 leading-relaxed' placeholder='AI-generated result...' readOnly />
+            <Textarea
+              className='resize-none p-4 leading-relaxed'
+              placeholder='Include the prompt for the AI...'
+              value={input}
+              onChange={handleInputChange}
+            />
+            <Textarea
+              readOnly 
+              className='resize-none p-4 leading-relaxed'
+              placeholder='AI-generated result...'
+              value={completion}
+            />
           </div>
           <p className='text-sm text-muted-foreground'>
             Remember: You can use the <code className='text-violet-400'>{'{transcript}'}</code> variable in your prompt to add selected video transcript content.
@@ -33,61 +67,14 @@ function App() {
         </div>
         
         <aside className='w-80 space-y-6'>
-          <form className='space-y-6'>
-            <label  
-              htmlFor="video"
-              className='w-full
-                border
-                flex
-                rounded-md
-                aspect-video
-                cursor-pointer
-                border-dashed
-                flex-col
-                gap-2
-                text-sm
-                items-center
-                justify-center
-                text-muted-foreground
-                transition
-                hover:bg-secondary/25'
-            >
-              <FileVideo className='h-4 w-4'/>
-              Set a MP4 video type 
-            </label>
-            <input type="file" name="" id="video" accept='video/mp4' className='sr-only' />
-
-            <Separator />
-
-            <div className="space-y-2">
-              <Label htmlFor="transcription_prompt">Transcription Prompt</Label>
-              <Textarea
-                id='transcription_prompt'
-                className='h-24 leading-relaxed resize-none'
-                placeholder='Please make sure to list all of the keywords mentioned in the video and separate them with commas ( , ).'
-              />
-            </div>
-
-            <Button type='submit' className='w-full'>
-              Load video
-              <Upload className='w-4 h-4 ml-2' />
-            </Button>
-          </form>
+          <VideoInputForm onVideoUploaded={setVideoId} />          
 
           <Separator />
 
-          <form className='space-y-6'>
+          <form onSubmit={handleSubmit} className='space-y-6'>
             <div className="space-y-2">
               <Label>Prompt type</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a prompt..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='title'>YouTube Title</SelectItem>
-                  <SelectItem value='description'>YouTube Description</SelectItem>
-                </SelectContent>
-              </Select>
+              <PromptSelect onPromptSelected={setInput} />
             </div>
 
             <Separator />
@@ -115,7 +102,9 @@ function App() {
               <Slider
                 min={0}
                 max={1}
-                step={.1}
+                step={0.1}
+                value={[Temperature]}
+                onValueChange={value => setTemperature(value[0])}
               />
 
               <span className='block text-xs text-muted-foreground italic leading-relaxed'>
@@ -125,7 +114,7 @@ function App() {
 
             <Separator />
 
-            <Button type='submit' className='w-full'>
+            <Button disabled={isLoading} type='submit' className='w-full'>
               Execute
               <Wand2 className='ml-2 h-4 w-4'/>
             </Button>
